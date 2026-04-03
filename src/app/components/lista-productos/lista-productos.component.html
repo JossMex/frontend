@@ -1,0 +1,80 @@
+<div class="container mt-4>">
+
+  <!--Título-->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Inventario de Productos</h2>
+    <button class="btn btn-success"> + Nuevo Producto</button>
+  </div>
+
+  <!-- Mensaje de exito o de error-->
+  <div *ngIf="mensaje" class="alert alert-info alert-dismissible">
+    {{ mensaje }}
+    <button type="button" class="btn-close" aria-label="Cerrar mensaje" (click)="mensaje=''"></button>
+  </div>
+
+  <!-- BUscador-->
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="Buscar producto..." [(ngModel)]="terminoBusqueda"
+      (keyup)="buscar()">
+    <button class="btn btn-outline-secondary" (click)="cargarProductos()">
+      Limpiar
+    </button>
+  </div>
+
+  <!--Spinner de carga-->
+  <div *ngIf="cargando" class="text-center my-4">
+    <div class="spinner-border text-primary"></div>
+    <p>Cargando productos...</p>
+  </div>
+
+  <!--Tabla de productos-->
+  <table *ngIf="!cargando" class="table table-hover table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Categoria</th>
+        <th>Precio</th>
+        <th>Stock</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <!--Si no hay productos-->
+      <tr *ngIf="productos.length === 0">
+        <td colspan="6" class="text-center text-muted">
+          No se encontraron productos.
+        </td>
+      </tr>
+
+      <!--Fila por cada producto-->
+      <tr *ngFor="let producto of productos" ¨[class.table-warning]="stockBajo(producto)">
+        <td>{{ producto.id }}</td>
+        <td>
+          {{ producto.nombre}}
+          <!--Alerte de stock bajo-->
+          <span *ngIf="stockBajo(producto)" class="badge bg-warning text-dark ms-2">
+            Stock Bajo
+          </span>
+        </td>
+        <td>{{producto.categoria?.nombre || 'Sin categoría'}}</td>
+        <td>{{producto.precio | currency:'MXN' : 'symbol':'1.2-2'}}</td>
+        <td>{{producto.stock}}</td>
+        <td>
+          <button class="btn btn-sm btn-primary me-1">
+            Editar
+          </button>
+          <button class="btn btn-sm btn-danger" (click)="eliminar(producto.id!)">
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!--Contador-->
+  <p class="text-muted">
+    Total de productos: {{ productos.length }} productos.
+  </p>
+</div>
