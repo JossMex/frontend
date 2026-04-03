@@ -1,0 +1,88 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+
+      <!--Tarjeta de formulario-->
+      <div class="card shadow-sm" >
+        <h4 class="mb-0 text-center" >
+          {{ modoEditar ? 'Editar Producto' : ' Nuevo Producto'}}
+        </h4>
+      </div>
+
+      <div class="card-body">
+
+        <!--Errores de validación-->
+        <div *ngIf="errores.length > 0" class="alert alert-danger">
+          <ul class="mb-0">
+            <li *ngFor="let error of errores">{{ error }}</li>
+          </ul>
+        </div>
+
+        <!--Nombre-->
+        <div class="mb-3">
+          <label class="form-label fw-bold">Nombre *</label>
+          <input type="text" class="form-control" placeholder="Ej: Lap Top Lenovo" [(ngModel)]="Producto.nombre">
+          <!--name="nombre"-->
+        </div>
+
+        <!--Descripción-->
+        <div class="mb-3">
+          <label class="form-label fw-bold">Descripción</label>
+          <textarea class="form-control" rows="2" placeholder="Descripción opcional..."
+            [(ngModel)]="Producto.descripcion" name="descripcion">
+          </textarea>
+        </div>
+
+        <!--Precio y stock en la misma fila-->
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Precio *</label>
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+              <input type="number" class="form-control" placeholder="0.00" [(ngModel)]="Producto.precio" name="precio"
+                min="0">
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Stock *</label>
+            <input type="number" class="form-control" placeholder="0" [(ngModel)]="Producto.stock" name="stock" min="0">
+          </div>
+        </div>
+
+        <!-- Stock minimo y categoria-->
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Stock Mínimo *</label>
+            <input type="number" class="form-control" placeholder="0" [(ngModel)]="Producto.stockMinimo"
+              name="stockMinimo" min="0">
+
+            <small class="text-muted">
+              Alerta cuando el stock baje de este número
+            </small>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Categoria</label>
+            <select class="form-select" [(ngModel)]="Producto.categoria" name="categoria"
+              aria-label="categoria del producto">
+              <option [ngValue]="undefined">Sin categoria</option>
+              <option *ngFor="let cat of categorias" [ngValue]="cat">{{ cat.nombre }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!--Botones-->
+      <div class="card-footer d-flex justify-content-end gap-2">
+        <button class="btn btn-secondary" (click)="cancelar()">
+          Cancelar
+        </button>
+        <button class="btn btn-success" (click)="guardar()" [disabled]="guardando">
+          {{guardando ? 'Guardando...': (modoEditar ? 'Actualizar' : 'Guardar')}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
