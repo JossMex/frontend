@@ -43,7 +43,7 @@ export class FormProductoComponent implements OnInit {
       error: (err) => console.error(err)
     });
 
-    //Leer el ID de lal URL -> /producto/editar/5
+    //Leer el ID de la URL -> /producto/editar/5
     const id = this.route.snapshot.paramMap.get('id');
 
     if(id){

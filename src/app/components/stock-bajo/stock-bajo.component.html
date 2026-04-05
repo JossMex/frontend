@@ -1,0 +1,57 @@
+<div class="container mt-4">
+
+  <!--Título-->
+  <div class="d-flex justify-contenet-between align-tems-ceter mb-3">
+    <h2>Productos con Stock Bajo</h2>
+    <button class="btn btn-outline-primary" (click)="cargarStockBajo()">
+      Actualizar
+    </button>
+  </div>
+
+  <!-- Sin productos-->
+  <div *ngIf="!cargando && productos.length === 0" class="alert alert-success">
+    Todos los productos tienen un stock adecuado.
+  </div>
+
+  <!-- spinner-->
+  <div *ngIf="cargando" class="text-center my-4">
+    <div class="spinner-border text-warning"></div>
+    <p>Cargando...</p>
+  </div>
+
+  <!-- Tabla-->
+  <table *ngIf="!cargando && productos.length > 0" class="table table-bordered table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>Producto</th>
+        <th>Categoría</th>
+        <th class="text-center">Stock actual</th>
+        <th class="text-center">stock Mínimo</th>
+        <th class="text-center">Diferencia</th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let producto of productos" class="table-danger">
+        <td>{{ producto.nombre }}</td>
+        <td>{{ producto.categoria?.nombre || 'Sin categoría' }}</td>
+        <td class="text-center fw-bold">{{ producto.stock }}</td>
+        <td class="text-center ">{{ producto.stockMinimo }}</td>
+        <td class="text-center fw-bold text-danger">{{ diferencia(producto)}}
+          <!-- Muestra cuantas unidades faltan-->
+          <small class="text-muted d-block">
+            {{diferencia(producto) === 0 ? 'En limite' : 'unidades abajo de minimo'}}
+          </small>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-primary" (click)="irAEditar(producto.id!)">Actualizar Stock</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Resumen-->
+  <div *ngIf="productos.length > 0" class="alert alert-warning" mt-3>
+    Tiene <strong>{{productos.length}}</strong> producto(s) que necesitan reabastecimiento.
+  </div>
+</div>
