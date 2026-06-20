@@ -1,59 +1,215 @@
-# Frontend
+# 📦 Sistema de Gestión de Inventario / Inventory Management System
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.3.
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2-brightgreen)
+![Angular](https://img.shields.io/badge/Angular-17-red)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)
+![Docker](https://img.shields.io/badge/Docker-✓-blue)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
-## Development server
+---
 
-To start a local development server, run:
+## 🇲🇽 Español
 
+Sistema web full stack para la gestión de inventario de productos, desarrollado con Java Spring Boot en el backend y Angular en el frontend.
+
+### ✨ Funcionalidades
+
+- 📋 **CRUD completo de productos** — crear, leer, actualizar y eliminar
+- 🔍 **Búsqueda en tiempo real** por nombre de producto
+- ⚠️ **Alertas de stock bajo** — detecta productos por debajo del mínimo
+- 🗂️ **Gestión de categorías** — clasificación de productos
+- 📊 **Panel de control** con conteo total de productos
+- 🐳 **Base de datos en Docker** — sin instalación local de MySQL
+
+### 🛠️ Tecnologías utilizadas
+
+| Capa | Tecnología |
+|------|-----------|
+| Frontend | Angular 17, Bootstrap 5 |
+| Backend | Java 17, Spring Boot 3.2 |
+| Base de datos | MySQL 8.0 |
+| ORM | Spring Data JPA / Hibernate |
+| Contenedores | Docker |
+| Control de versiones | Git / GitHub |
+
+### 🏗️ Arquitectura del proyecto
+
+```
+┌─────────────────────────────────────────────┐
+│           Angular (Puerto 4200)             │
+│   lista-productos │ form-producto │ navbar  │
+└─────────────────────────┬───────────────────┘
+                          │ HTTP REST
+┌─────────────────────────▼───────────────────┐
+│         Spring Boot (Puerto 8081)           │
+│  Controller → Service → Repository → Model  │
+└─────────────────────────┬───────────────────┘
+                          │ JPA / Hibernate
+┌─────────────────────────▼───────────────────┐
+│           MySQL 8.0 (Docker :3306)          │
+│         productos │ categorias              │
+└─────────────────────────────────────────────┘
+```
+
+### 📁 Estructura del proyecto
+
+```
+inventario/
+├── backend/                    # Spring Boot
+│   ├── src/main/java/com/inventario/backend/
+│   │   ├── config/             # Configuración CORS
+│   │   ├── controller/         # Endpoints REST
+│   │   ├── model/              # Entidades JPA
+│   │   ├── repository/         # Acceso a datos
+│   │   └── service/            # Lógica de negocio
+│   ├── Dockerfile
+│   └── pom.xml
+└── frontend/                   # Angular
+    └── src/app/
+        ├── components/
+        │   ├── lista-productos/
+        │   ├── form-producto/
+        │   ├── stock-bajo/
+        │   └── navbar/
+        ├── services/
+        └── environments/
+```
+
+### 🚀 Instalación y ejecución local
+
+#### Prerequisitos
+- Java 17+
+- Node.js 18+
+- Angular CLI
+- Docker Desktop
+
+#### 1. Clonar el repositorio
 ```bash
+git clone https://github.com/JossMex/inventario.git
+cd inventario
+```
+
+#### 2. Levantar la base de datos
+```bash
+docker run -d \
+  --name mysql-inventario \
+  -e MYSQL_ROOT_PASSWORD=root1234 \
+  -e MYSQL_DATABASE=inventario_db \
+  -p 3306:3306 \
+  mysql:8.0
+```
+
+#### 3. Ejecutar el backend
+```bash
+cd backend
+./mvnw spring-boot:run
+```
+Backend disponible en: `http://localhost:8081`
+
+#### 4. Ejecutar el frontend
+```bash
+cd frontend
+npm install
 ng serve
 ```
+Frontend disponible en: `http://localhost:4200`
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### 🔗 Endpoints de la API
 
-## Code scaffolding
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| GET | `/api/productos` | Listar todos los productos |
+| GET | `/api/productos/{id}` | Obtener producto por ID |
+| GET | `/api/productos/buscar?nombre=x` | Buscar por nombre |
+| GET | `/api/productos/stock-bajo` | Productos con stock bajo |
+| POST | `/api/productos` | Crear producto |
+| PUT | `/api/productos/{id}` | Actualizar producto |
+| DELETE | `/api/productos/{id}` | Eliminar producto |
+| GET | `/api/categorias` | Listar categorías |
+| POST | `/api/categorias` | Crear categoría |
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🇺🇸 English
 
+A full stack web application for inventory management, built with Java Spring Boot on the backend and Angular on the frontend.
+
+### ✨ Features
+
+- 📋 **Full CRUD for products** — create, read, update and delete
+- 🔍 **Real-time search** by product name
+- ⚠️ **Low stock alerts** — detects products below minimum threshold
+- 🗂️ **Category management** — product classification
+- 📊 **Dashboard** with total product count
+- 🐳 **Dockerized database** — no local MySQL installation required
+
+### 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | Angular 17, Bootstrap 5 |
+| Backend | Java 17, Spring Boot 3.2 |
+| Database | MySQL 8.0 |
+| ORM | Spring Data JPA / Hibernate |
+| Containers | Docker |
+| Version Control | Git / GitHub |
+
+### 🚀 Local Setup
+
+#### Prerequisites
+- Java 17+
+- Node.js 18+
+- Angular CLI
+- Docker Desktop
+
+#### 1. Clone the repository
 ```bash
-ng generate component component-name
+git clone https://github.com/JossMex/inventario.git
+cd inventario
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
+#### 2. Start the database
 ```bash
-ng generate --help
+docker run -d \
+  --name mysql-inventario \
+  -e MYSQL_ROOT_PASSWORD=root1234 \
+  -e MYSQL_DATABASE=inventario_db \
+  -p 3306:3306 \
+  mysql:8.0
 ```
 
-## Building
-
-To build the project run:
-
+#### 3. Run the backend
 ```bash
-ng build
+cd backend
+./mvnw spring-boot:run
 ```
+Backend available at: `http://localhost:8081`
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
+#### 4. Run the frontend
 ```bash
-ng test
+cd frontend
+npm install
+ng serve
 ```
+Frontend available at: `http://localhost:4200`
 
-## Running end-to-end tests
+### 🔗 API Endpoints
 
-For end-to-end (e2e) testing, run:
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/productos` | List all products |
+| GET | `/api/productos/{id}` | Get product by ID |
+| GET | `/api/productos/buscar?nombre=x` | Search by name |
+| GET | `/api/productos/stock-bajo` | Low stock products |
+| POST | `/api/productos` | Create product |
+| PUT | `/api/productos/{id}` | Update product |
+| DELETE | `/api/productos/{id}` | Delete product |
+| GET | `/api/categorias` | List categories |
+| POST | `/api/categorias` | Create category |
 
-```bash
-ng e2e
-```
+### 📄 License
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+This project is licensed under the MIT License.
 
-## Additional Resources
+---
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Developed by **José Carlos Avila Martínez** — [GitHub](https://github.com/JossMex) · [LinkedIn](https://www.linkedin.com/in/carlos-avila561617163)
